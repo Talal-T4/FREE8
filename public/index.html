@@ -1,211 +1,836 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نظام الترقيات العسكرية</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="./styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام الترقيات العسكرية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--bg:#071108;--bg2:#0a160d;--card:#0c1c0e;--card2:#102313;--border:#1c4123;--border2:#2d5c35;--fg:#eef7ef;--fg2:#bdd2bf;--muted:#7b987f;--accent:#d8bb57;--accent2:#f0d36e;--glow:rgba(216,187,87,.20);--green:#2e7a3a;--green2:#4cb25d;--red:#7d2b2b;--red2:#d76161;--ok:#49bf5e}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo','Tajawal',sans-serif;background:radial-gradient(circle at top right,rgba(26,66,33,.25),transparent 28%),linear-gradient(180deg,#050b06,#071108 24%,#050b06 100%);color:var(--fg);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:6px}
+.bglayer{position:fixed;inset:0;z-index:0;pointer-events:none}
+.bglayer::before{content:'';position:absolute;top:-34%;right:-14%;width:64vw;height:64vw;background:radial-gradient(circle,rgba(216,187,87,.05) 0%,transparent 62%);animation:drift 24s ease-in-out infinite}
+.bglayer::after{content:'';position:absolute;bottom:-24%;left:-10%;width:56vw;height:56vw;background:radial-gradient(circle,rgba(76,178,93,.06) 0%,transparent 62%);animation:drift 30s ease-in-out infinite reverse}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(4%,-4%) scale(1.04)}}
+.grdbg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(28,65,35,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(28,65,35,.12) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 80% 60% at 50% 18%,black 10%,transparent 72%)}
+.view{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:20px 14px 60px}
+.hidden{display:none!important}
+.tbox{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.tst{padding:11px 18px;background:rgba(14,29,17,.98);backdrop-filter:blur(8px);border:1px solid var(--border2);border-radius:12px;color:var(--fg);font-size:13px;font-weight:700;box-shadow:0 10px 30px rgba(0,0,0,.42);animation:tin .25s ease,tout .25s ease 2.8s forwards;display:flex;align-items:center;gap:9px;pointer-events:auto;white-space:nowrap}
+.tst.s{border-color:var(--green)}.tst.s i{color:var(--ok)}
+.tst.e{border-color:var(--red)}.tst.e i{color:var(--red2)}
+@keyframes tin{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes tout{to{opacity:0;transform:translateY(-14px)}}
+.cd{background:linear-gradient(180deg,rgba(11,24,13,.98),rgba(11,24,13,.92));border:1px solid rgba(44,92,52,.65);border-radius:18px;padding:22px;position:relative;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.24)}
+.cd::before{content:'';position:absolute;inset:0 0 auto 0;height:1px;background:linear-gradient(90deg,transparent,rgba(216,187,87,.65),transparent)}
+.cdg::before{height:2px;background:linear-gradient(90deg,rgba(216,187,87,.95),rgba(76,178,93,.95),rgba(216,187,87,.95))}
+.fi{width:100%;padding:12px 14px;background:rgba(7,17,8,.9);border:1px solid rgba(44,92,52,.6);border-radius:12px;color:var(--fg);font-family:'Cairo',sans-serif;font-size:13px;transition:all .25s;outline:none}
+.fi:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
+.fi::placeholder{color:var(--muted);opacity:.7}
+textarea.fi{min-height:110px;resize:vertical;line-height:1.8}
+input[type="checkbox"]{accent-color:var(--accent)}
+.fl{display:block;font-size:12px;font-weight:700;color:var(--fg2);margin-bottom:6px}
+.fl .rq{color:var(--red2);margin-right:2px}
+.fl .ht{display:block;font-weight:400;color:var(--muted);font-size:10px;margin-top:4px;line-height:1.6}
+.fg{margin-bottom:16px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bt{padding:10px 18px;border:none;border-radius:11px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btg{background:linear-gradient(135deg,var(--accent),#bc9f37);color:#0a0e08}
+.btg:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(216,187,87,.28)}
+.bto{background:rgba(16,35,19,.7);border:1px solid rgba(44,92,52,.75);color:var(--fg2)}
+.bto:hover{border-color:var(--accent);color:var(--accent2)}
+.btr{background:rgba(125,43,43,.18);border:1px solid rgba(125,43,43,.7);color:#f39a9a}
+.btr:hover{background:rgba(125,43,43,.3)}
+.bts{padding:7px 12px;font-size:11px;border-radius:9px}
+.btb{width:100%;padding:14px}
+.bt:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:3px;margin-bottom:18px}
+.tabs::-webkit-scrollbar{height:0}
+.tab{padding:8px 16px;background:rgba(11,24,13,.85);border:1px solid rgba(44,92,52,.6);border-radius:11px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .25s}
+.tab:hover{color:var(--fg2);border-color:var(--border2)}
+.tab.on{background:rgba(16,35,19,.95);border-color:var(--accent);color:var(--accent2)}
+.sp{display:flex;align-items:center;gap:12px;margin:26px 0}
+.sp::before,.sp::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(44,92,52,.9),transparent)}
+.sp i{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(11,24,13,.95);border:1px solid rgba(44,92,52,.85);border-radius:12px;color:var(--accent);font-size:13px}
+.nr{display:flex;gap:10px;padding:12px 14px;background:rgba(11,24,13,.84);border:1px solid rgba(44,92,52,.55);border-radius:12px;margin-bottom:8px;align-items:flex-start}
+.nn{min-width:24px;height:24px;display:flex;align-items:center;justify-content:center;background:rgba(16,35,19,.9);border:1px solid rgba(44,92,52,.85);border-radius:7px;font-size:10px;font-weight:800;color:var(--accent);margin-top:1px;flex-shrink:0}
+.nt{font-size:12px;line-height:1.75;color:var(--fg2);flex:1}
+.nt a{color:var(--accent2);text-decoration:none;border-bottom:1px dashed var(--accent)}
+.nt .w{color:#ff8d8d;font-weight:700}
+.req-grid{display:grid;gap:12px}
+.rq{display:flex;align-items:center;gap:14px;padding:18px 20px;background:linear-gradient(90deg,rgba(10,25,12,.98),rgba(7,20,10,.95));border:1px solid rgba(50,109,60,.6);border-radius:18px;cursor:pointer;transition:all .25s;user-select:none;min-height:88px;box-shadow:inset 0 1px 0 rgba(255,255,255,.02)}
+.rq:hover{border-color:rgba(80,150,90,.82);transform:translateY(-1px)}
+.rq.ok{border-color:rgba(76,178,93,.85);background:linear-gradient(90deg,rgba(12,32,16,.98),rgba(12,29,14,.96))}
+.rq.ok .rc{background:rgba(76,178,93,.16);border-color:rgba(76,178,93,.72);color:#dff7e3}
+.rc{width:44px;height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(92,136,98,.55);border-radius:14px;font-size:16px;color:#7fa586;transition:all .25s;background:rgba(255,255,255,.01)}
+.ri{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.ri .rt{font-size:17px;font-family:'Tajawal',sans-serif;font-weight:800;color:var(--fg);line-height:1.3}
+.ri .rd{font-size:12px;color:#78917d;line-height:1.5}
+.rv{font-size:18px;font-family:'Tajawal',sans-serif;font-weight:900;color:var(--accent2);text-align:left;min-width:110px;line-height:1.2}
+.rv .ol{font-size:10px;color:var(--muted);text-decoration:line-through;font-weight:500;display:block;margin-top:4px}
+.dbdg{display:inline-block;font-size:10px;background:rgba(216,187,87,.12);color:var(--accent2);padding:3px 7px;border-radius:999px;margin-right:0;margin-left:6px;font-weight:900;vertical-align:middle}
+.prg-tr{width:100%;height:12px;background:rgba(11,24,13,.92);border:1px solid rgba(44,92,52,.6);border-radius:999px;overflow:hidden}
+.prg-fl{height:100%;background:linear-gradient(90deg,#2e7a3a,var(--accent),var(--accent2));border-radius:999px;width:0%;transition:width .6s cubic-bezier(.22,1,.36,1)}
+.dbn{padding:14px 16px;background:linear-gradient(135deg,rgba(216,187,87,.08),rgba(76,178,93,.05));border:1px solid rgba(216,187,87,.22);border-radius:14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:13px}
+.dbn i{color:var(--accent2);font-size:18px}
+.dbn .dp{font-weight:900;color:var(--accent2);font-size:18px;font-family:'Tajawal',sans-serif}
+.ckc,.sbc{padding:16px;background:rgba(11,24,13,.9);border:1px solid rgba(44,92,52,.6);border-radius:14px;margin-bottom:10px}
+.ckc .tp,.sbc .sh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.ckc .ct{font-size:18px;font-weight:900;color:var(--accent2);font-family:'Tajawal',sans-serif}
+.ckc .cds,.sbc .stm{font-size:11px;color:var(--muted)}
+.ckc .mts{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.ckc .tg{font-size:10px;padding:4px 10px;border-radius:999px;font-weight:700}
+.tg.act{background:rgba(74,170,74,.12);color:var(--green2);border:1px solid rgba(74,170,74,.25)}
+.tg.inact{background:rgba(90,128,90,.08);color:var(--muted);border:1px solid rgba(44,92,52,.4)}
+.tg.temp{background:rgba(216,187,87,.1);color:var(--accent2);border:1px solid rgba(216,187,87,.22)}
+.tg.used{background:rgba(125,43,43,.18);color:#ffb2b2;border:1px solid rgba(125,43,43,.35)}
+.sbc .sc{font-weight:800;color:var(--accent2);font-size:14px}
+.sbc .sd{font-size:12px;color:var(--fg2);line-height:1.85}
+.sbc .sd b{color:var(--accent);font-weight:700}
+.sbc .orgs{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(44,92,52,.5)}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;z-index:1}
+.login-card{width:100%;max-width:390px;background:linear-gradient(180deg,rgba(11,24,13,.98),rgba(11,24,13,.9));border:1px solid rgba(44,92,52,.62);border-radius:22px;padding:38px 28px;text-align:center;position:relative;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.32)}
+.login-card::before{content:'';position:absolute;top:0;right:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--green2),var(--accent))}
+.login-card h2{font-family:'Tajawal',sans-serif;font-size:28px;font-weight:900;margin-bottom:8px}
+.login-card p{font-size:12px;color:var(--muted);margin-bottom:24px}
+.sec-t{font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-t i{color:var(--accent);font-size:14px}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(16,35,19,.92);border:1px solid rgba(44,92,52,.75);padding:8px 20px;border-radius:999px;font-size:12px;color:var(--accent2);margin-bottom:18px}
+.hero-title{font-family:'Tajawal',sans-serif;font-size:clamp(24px,5vw,36px);font-weight:900;line-height:1.55;margin-bottom:8px;letter-spacing:.2px}
+.hero-title .old{color:#95a995;text-decoration:line-through;text-decoration-color:#627667}
+.hero-title .new{color:var(--accent2);border-bottom:2px solid rgba(216,187,87,.7);padding-bottom:2px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.inline-check{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--fg2);padding:4px 2px}
+.empty-st{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px}
+.empty-st i{font-size:36px;display:block;margin-bottom:12px;opacity:.3}
+@media(max-width:700px){.fr{grid-template-columns:1fr}.view{padding:12px 10px 40px}.cd{padding:16px}.login-card{padding:30px 20px}.rq{padding:16px;gap:12px}.ri .rt{font-size:15px}.rv{min-width:auto;font-size:16px}.hero-title{font-size:clamp(22px,7vw,30px)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
-  <div class="bg-layer"></div>
-  <div id="toastBox" class="toast-box"></div>
+<div class="bglayer"></div>
+<div class="grdbg"></div>
+<div class="tbox" id="tbox"></div>
 
-  <main class="shell">
-    <section id="loginView" class="card auth-card">
-      <div class="badge"><i class="fas fa-shield-halved"></i> نظام الترقيات العسكرية</div>
-      <h1 class="system-heading">تسجيل الدخول</h1>
-      <p class="muted">أدخل رمزك للمتابعة أو افتح لوحة الإدارة.</p>
-      <div class="field-group">
-        <label class="field-label" for="userCode">الرمز</label>
-        <input id="userCode" class="input big-input" type="text" placeholder="MIL-XXXXXX" autocomplete="off">
+<div id="vLogin" class="login-wrap">
+  <div class="login-card">
+    <h2>نظام الترقيات</h2>
+    <p>أدخل الرمز الخاص بك للمتابعة</p>
+    <div class="fg">
+      <input type="text" class="fi" id="inCode" placeholder="الرمز الخاص بك" autocomplete="off" style="text-align:center;font-size:18px;font-weight:800;letter-spacing:3px;font-family:'Tajawal',sans-serif">
+    </div>
+    <button class="bt btg btb" id="btnGo"><i class="fas fa-arrow-left"></i> دخول</button>
+    <div style="margin-top:18px">
+      <button class="bt bto bts" id="btnAdmin"><i class="fas fa-lock"></i> دخول الإدارة</button>
+    </div>
+  </div>
+</div>
+
+<div id="vUser" class="view hidden">
+  <header style="text-align:center;padding:30px 10px 20px">
+    <div class="hero-chip"><i class="fas fa-shield-halved"></i> نظام الترقيات العسكرية</div>
+    <h1 class="hero-title">ترقية من <span class="old">فريق أول</span> إلى <span class="new">فريق أول ركن</span></h1>
+  </header>
+
+  <div class="cd" id="dateCard" style="margin-bottom:20px">
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
+      <div style="text-align:center;min-width:110px"><div style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:3px">بداية الحسبة</div><div id="dStart" style="font-size:20px;font-weight:900;color:var(--accent2);font-family:'Tajawal',sans-serif">--</div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div style="width:60px;height:2px;background:linear-gradient(90deg,var(--border2),var(--accent),var(--border2));border-radius:1px"></div><div id="dPeriod" style="font-size:10px;color:var(--muted);background:var(--card2);padding:3px 12px;border-radius:999px;border:1px solid rgba(44,92,52,.65)">--</div><div style="width:60px;height:2px;background:linear-gradient(90deg,var(--border2),var(--accent),var(--border2));border-radius:1px"></div></div>
+      <div style="text-align:center;min-width:110px"><div style="font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:3px">نهاية الحسبة</div><div id="dEnd" style="font-size:20px;font-weight:900;color:var(--accent2);font-family:'Tajawal',sans-serif">--</div></div>
+    </div>
+  </div>
+
+  <div id="discBanner" class="dbn hidden">
+    <i class="fas fa-tags"></i>
+    <span>خصم فعال: <span class="dp" id="discPct">--</span> على متطلبات الترقية</span>
+  </div>
+
+  <div class="sp"><i class="fas fa-list-check"></i></div>
+  <div class="sec-t"><i class="fas fa-medal"></i>متطلبات الترقية</div>
+  <div id="reqBox" class="req-grid"></div>
+
+  <div style="margin:24px 0">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-size:13px;color:var(--fg2);font-weight:700">التقدم الإجمالي</span>
+      <span id="prgPct" style="font-size:22px;font-weight:900;color:var(--accent2);font-family:'Tajawal',sans-serif">0%</span>
+    </div>
+    <div class="prg-tr"><div class="prg-fl" id="prgFl"></div></div>
+  </div>
+
+  <div class="sp"><i class="fas fa-file-lines"></i></div>
+  <div class="cd cdg">
+    <div class="sec-t" style="margin-bottom:18px"><i class="fas fa-clipboard-list"></i>استبيان الدورة العسكرية</div>
+    <div class="fr">
+      <div class="fg"><label class="fl">يوم الدورة<span class="rq">*</span></label><input type="date" class="fi" id="fDate"></div>
+      <div class="fg"><label class="fl">الساعة كم<span class="rq">*</span></label><input type="time" class="fi" id="fTime"></div>
+    </div>
+    <div class="fg">
+      <label class="fl">منظمين الدورة<span class="rq">*</span><span class="ht">يفضل تكون رتبتهم من عقيد وفوق — حدك 4 منظمين</span></label>
+      <div id="orgBox"></div>
+    </div>
+    <div class="fg"><label class="fl">اسم الدورة<span class="rq">*</span></label><input type="text" class="fi" id="fName" placeholder="اسم الدورة العسكرية"></div>
+    <div class="fg"><label class="fl">عن شنو بتكون الدورة<span class="rq">*</span></label><input type="text" class="fi" id="fAbout" placeholder="وصف مختصر عن محتوى الدورة"></div>
+    <div class="fg"><label class="fl">شرح تفصيلي عن دورتك<span class="rq">*</span><span class="ht">يشمل الملابس، موقع التجمع، التفاصيل الكاملة</span></label><textarea class="fi" id="fDetail" placeholder="اكتب شرح تفصيلي شامل..."></textarea></div>
+    <button class="bt btg btb" id="btnSubmit"><i class="fas fa-paper-plane"></i>تسليم استبيان الدورة</button>
+  </div>
+
+  <div id="adminNotes" class="hidden">
+    <div class="sp"><i class="fas fa-bell"></i></div>
+    <div class="sec-t"><i class="fas fa-bullhorn"></i>ملاحظات من الإدارة</div>
+    <div id="adminNotesList"></div>
+  </div>
+
+  <div class="sp"><i class="fas fa-triangle-exclamation"></i></div>
+  <div class="sec-t"><i class="fas fa-circle-info"></i>ملاحظات مهمة</div>
+  <div class="nr"><div class="nn">1</div><div class="nt">راجع هذا التعميم: <a href="https://discord.com/channels/753281690381582356/1136793539783688344/1440717406887612457" target="_blank">التعميم الرسمي</a></div></div>
+  <div class="nr"><div class="nn">2</div><div class="nt">استبيان الدورة يسلم قبل الدورة بـ 3 أيام على الأقل</div></div>
+  <div class="nr"><div class="nn">3</div><div class="nt"><span class="w">في حال عدم اكمال متطلبات الترقية سيتم احالتك الى رتبة فريق</span></div></div>
+  <div class="nr"><div class="nn">4</div><div class="nt">حدك 4 منظمين في الدورة العسكرية</div></div>
+  <div class="nr"><div class="nn">5</div><div class="nt">الدورة العسكرية بتكون خلال فترة حسبتك</div></div>
+
+  <footer style="text-align:center;margin-top:36px;color:var(--muted);font-size:11px"><div style="width:30px;height:1px;background:var(--border2);margin:0 auto 12px"></div>نظام الترقيات العسكرية</footer>
+</div>
+
+<div id="vAdmin" class="view hidden">
+  <header style="text-align:center;padding:30px 10px 16px">
+    <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(216,187,87,.08);border:1px solid rgba(216,187,87,.2);padding:6px 20px;border-radius:999px;font-size:11px;color:var(--accent);margin-bottom:14px"><i class="fas fa-crown"></i> لوحة تحكم الإدارة</div>
+    <h1 style="font-family:'Tajawal',sans-serif;font-size:28px;font-weight:900">إدارة نظام الترقيات</h1>
+  </header>
+
+  <div class="tabs" id="adminTabs">
+    <div class="tab on" data-t="codes"><i class="fas fa-key" style="margin-left:5px"></i>الأكواد</div>
+    <div class="tab" data-t="disc"><i class="fas fa-tags" style="margin-left:5px"></i>الخصومات</div>
+    <div class="tab" data-t="notes"><i class="fas fa-note-sticky" style="margin-left:5px"></i>الملاحظات</div>
+    <div class="tab" data-t="subs"><i class="fas fa-inbox" style="margin-left:5px"></i>الاستبيانات</div>
+  </div>
+
+  <div id="pCodes" class="atab">
+    <div class="cd" style="margin-bottom:16px">
+      <div class="sec-t" style="margin-bottom:16px"><i class="fas fa-plus"></i>إنشاء كود جديد</div>
+      <div class="fg"><label class="fl">الرمز<span class="rq">*</span></label><div style="display:flex;gap:8px"><input type="text" class="fi" id="ncCode" placeholder="مثال: MIL-2847" style="flex:1"><button class="bt btg bts" id="btnGen"><i class="fas fa-shuffle"></i>توليد</button></div></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">بداية الحسبة<span class="rq">*</span></label><input type="date" class="fi" id="ncStart"></div>
+        <div class="fg"><label class="fl">نهاية الحسبة<span class="rq">*</span></label><input type="date" class="fi" id="ncEnd"></div>
       </div>
-      <div class="row gap-sm mobile-stack">
-        <button id="userLoginBtn" class="btn btn-primary full"><i class="fas fa-arrow-left"></i> دخول المستخدم</button>
-        <button id="adminOpenBtn" class="btn btn-outline full"><i class="fas fa-lock"></i> دخول الإدارة</button>
+      <div class="fg">
+        <label class="inline-check"><input type="checkbox" id="ncTemp"> كود مؤقت</label>
       </div>
-    </section>
+      <div class="fg hidden" id="tempWrap">
+        <label class="fl">ينتهي الكود المؤقت في<span class="rq">*</span><span class="ht">الكود المؤقت يُستخدم مرة واحدة فقط، وبعد انتهاء الوقت يتعطل تلقائيًا</span></label>
+        <input type="datetime-local" class="fi" id="ncTempUntil">
+      </div>
+      <div class="fr">
+        <button class="bt btg btb" id="btnAddCode"><i class="fas fa-plus"></i>إضافة الكود</button>
+        <button class="bt btr btb" id="btnDeleteCodeByInput"><i class="fas fa-trash"></i>حذف الكود</button>
+      </div>
+    </div>
+    <div class="sec-t"><i class="fas fa-list"></i>الأكواد المُنشأة</div>
+    <div id="codesList"><div class="empty-st"><i class="fas fa-key"></i>لا توجد أكواد بعد</div></div>
+  </div>
 
-    <section id="userView" class="hidden">
-      <header class="hero">
-        <div class="badge"><i class="fas fa-medal"></i> نسخة GitHub + Supabase + Netlify</div>
-        <h1 class="system-heading">ترقية من <span class="crossed">فريق أول</span> إلى <span class="accent">فريق أول ركن</span></h1>
-        <div class="hero-actions">
-          <button id="logoutBtn" class="btn btn-outline btn-sm"><i class="fas fa-right-from-bracket"></i> خروج</button>
-        </div>
-      </header>
+  <div id="pDisc" class="atab hidden">
+    <div class="cd" style="margin-bottom:16px">
+      <div class="sec-t" style="margin-bottom:16px"><i class="fas fa-percent"></i>إضافة خصم</div>
+      <div class="fg"><label class="fl">نسبة الخصم<span class="rq">*</span><span class="ht">من 1 إلى 99 بالمئة</span></label><input type="number" class="fi" id="ndPct" min="1" max="99" placeholder="مثال: 25"></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">بداية الخصم<span class="rq">*</span></label><input type="datetime-local" class="fi" id="ndStart"></div>
+        <div class="fg"><label class="fl">نهاية الخصم<span class="rq">*</span></label><input type="datetime-local" class="fi" id="ndEnd"></div>
+      </div>
+      <div class="fg"><label class="fl">سبب الخصم</label><input type="text" class="fi" id="ndReason" placeholder="اختياري — مثال: مناسبة خاصة"></div>
+      <button class="bt btg btb" id="btnAddDisc"><i class="fas fa-plus"></i>إضافة الخصم</button>
+    </div>
+    <div class="sec-t"><i class="fas fa-clock-rotate-left"></i>الخصومات المسجلة</div>
+    <div id="discList"><div class="empty-st"><i class="fas fa-tags"></i>لا توجد خصومات</div></div>
+  </div>
 
-      <section class="card date-card">
-        <div class="date-item">
-          <span>بداية الحسبة</span>
-          <strong id="startDate">--</strong>
-        </div>
-        <div class="date-center">
-          <span id="periodText">--</span>
-        </div>
-        <div class="date-item">
-          <span>نهاية الحسبة</span>
-          <strong id="endDate">--</strong>
-        </div>
-      </section>
+  <div id="pNotes" class="atab hidden">
+    <div class="cd" style="margin-bottom:16px">
+      <div class="sec-t" style="margin-bottom:16px"><i class="fas fa-plus"></i>إضافة ملاحظة</div>
+      <div class="fg"><label class="fl">نص الملاحظة<span class="rq">*</span></label><textarea class="fi" id="nnText" placeholder="اكتب الملاحظة التي تظهر لجميع المستخدمين..."></textarea></div>
+      <button class="bt btg btb" id="btnAddNote"><i class="fas fa-plus"></i>إضافة الملاحظة</button>
+    </div>
+    <div class="sec-t"><i class="fas fa-list"></i>الملاحظات المُضافة</div>
+    <div id="notesList"><div class="empty-st"><i class="fas fa-note-sticky"></i>لا توجد ملاحظات</div></div>
+  </div>
 
-      <section id="discountBanner" class="card banner hidden"></section>
+  <div id="pSubs" class="atab hidden">
+    <div class="sec-t" style="margin-bottom:14px"><i class="fas fa-inbox"></i>الاستبيانات المُسلّمة</div>
+    <div id="subsList"><div class="empty-st"><i class="fas fa-inbox"></i>لم يتم تسليم أي استبيان بعد</div></div>
+  </div>
 
-      <section>
-        <div class="section-title"><i class="fas fa-list-check"></i> متطلبات الترقية</div>
-        <div id="requirementsBox" class="grid requirements-grid"></div>
-      </section>
+  <div style="text-align:center;margin-top:30px">
+    <button class="bt btr" id="btnLogout"><i class="fas fa-right-from-bracket"></i>تسجيل خروج</button>
+  </div>
+</div>
 
-      <section class="card progress-card">
-        <div class="row spread">
-          <span>التقدم الإجمالي</span>
-          <strong id="progressText">0%</strong>
-        </div>
-        <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
-      </section>
+<script>
+const ADMIN_PWD = 'mil2026admin';
+const DB_PREFIX = 'mil_promo_';
+const BASE_REQS = [
+  {id:'hours', title:'الساعات', desc:'عدد الساعات المطلوبة خلال فترة الحسبة', val:170, unit:'ساعة', icon:'fa-clock'},
+  {id:'shifts', title:'المناوبات', desc:'عدد المناوبات المطلوبة', val:20, unit:'مناوبة', icon:'fa-calendar-days'},
+  {id:'interviews', title:'المقابلات', desc:'عدد المقابلات المطلوبة', val:25, unit:'مقابلة', icon:'fa-comments'},
+  {id:'tables', title:'المشاركة في جداول الأقسام', desc:'60 جدول في جدول الأقسام', val:60, unit:'جدول', icon:'fa-table-columns'},
+  {id:'course', title:'دورة عسكرية', desc:'يجب تنظيم دورة عسكرية خلال فترة الحسبة', val:1, unit:'مطلوب', icon:'fa-graduation-cap'},
+  {id:'clean', title:'ماعليك محاسبة', desc:'يجب ألا تكون عليك أي محاسبة', val:1, unit:'شرط', icon:'fa-check-double'},
+  {id:'field', title:'شغلك بالميدان + ترشيح', desc:'العمل الميداني مع الترشيح', val:1, unit:'مطلوب', icon:'fa-location-dot'}
+];
 
-      <section class="card">
-        <div class="section-title"><i class="fas fa-clipboard-list"></i> استبيان الدورة العسكرية</div>
-        <div class="grid two-col">
-          <div class="field-group">
-            <label class="field-label" for="courseDate">يوم الدورة</label>
-            <input id="courseDate" class="input" type="date">
-          </div>
-          <div class="field-group">
-            <label class="field-label" for="courseTime">الوقت</label>
-            <input id="courseTime" class="input" type="time">
-          </div>
-        </div>
-        <div class="field-group">
-          <label class="field-label">المنظمون <span class="hint">من 2 إلى 4</span></label>
-          <div id="organizersBox"></div>
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="courseName">اسم الدورة</label>
-          <input id="courseName" class="input" type="text" placeholder="اسم الدورة العسكرية">
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="courseAbout">عن شنو بتكون الدورة</label>
-          <input id="courseAbout" class="input" type="text" placeholder="وصف مختصر للمحتوى">
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="courseDetails">شرح تفصيلي</label>
-          <textarea id="courseDetails" class="input textarea" placeholder="اكتب الشرح التفصيلي الكامل..."></textarea>
-        </div>
-        <button id="submitSurveyBtn" class="btn btn-primary full"><i class="fas fa-paper-plane"></i> تسليم الاستبيان</button>
-      </section>
+let state = {
+  view: 'login',
+  code: null,
+  codeData: null,
+  adminAuth: false,
+  reqsDone: {},
+  adminTab: 'codes'
+};
 
-      <section id="notesSection" class="hidden">
-        <div class="section-title"><i class="fas fa-bullhorn"></i> ملاحظات الإدارة</div>
-        <div id="notesList" class="stack"></div>
-      </section>
-    </section>
+function dbGet(key, fallback) {
+  try {
+    const v = localStorage.getItem(DB_PREFIX + key);
+    return v ? JSON.parse(v) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+function dbSet(key, val) {
+  localStorage.setItem(DB_PREFIX + key, JSON.stringify(val));
+}
+function getCodes() { return dbGet('codes', []); }
+function saveCodes(v) { dbSet('codes', v); }
+function getDiscs() { return dbGet('discounts', []); }
+function saveDiscs(v) { dbSet('discounts', v); }
+function getNotes() { return dbGet('notes', []); }
+function saveNotes(v) { dbSet('notes', v); }
+function getSubs() { return dbGet('submissions', []); }
+function saveSubs(v) { dbSet('submissions', v); }
+function reqKey(code) { return 'reqs_done_' + (code || 'guest'); }
 
-    <section id="adminView" class="hidden">
-      <header class="hero small-hero">
-        <div class="badge"><i class="fas fa-crown"></i> لوحة الإدارة</div>
-        <h1 class="system-heading">إدارة النظام</h1>
-        <div class="hero-actions">
-          <button id="adminBackBtn" class="btn btn-outline btn-sm"><i class="fas fa-arrow-right"></i> رجوع</button>
-        </div>
-      </header>
+function toast(msg, type = 's') {
+  const box = document.getElementById('tbox');
+  const el = document.createElement('div');
+  el.className = 'tst ' + type;
+  const ic = type === 's' ? 'fa-circle-check' : 'fa-circle-xmark';
+  el.innerHTML = '<i class="fas ' + ic + '"></i>' + msg;
+  box.appendChild(el);
+  setTimeout(() => { if (el.parentNode) el.remove(); }, 3200);
+}
 
-      <section id="adminLoginCard" class="card auth-card compact">
-        <h2 class="system-subheading">دخول الإدارة</h2>
-        <div class="field-group">
-          <label class="field-label" for="adminPassword">كلمة المرور</label>
-          <input id="adminPassword" class="input" type="password" placeholder="********">
-        </div>
-        <button id="adminLoginBtn" class="btn btn-primary full"><i class="fas fa-lock-open"></i> دخول</button>
-      </section>
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
 
-      <section id="adminPanel" class="hidden">
-        <div class="grid two-col admin-grid">
-          <div class="card">
-            <div class="section-title"><i class="fas fa-key"></i> إنشاء كود جديد</div>
-            <div class="field-group">
-              <label class="field-label" for="newCode">الرمز</label>
-              <div class="row gap-sm mobile-stack">
-                <input id="newCode" class="input" type="text" placeholder="MIL-XXXXXX">
-                <button id="generateCodeBtn" class="btn btn-outline btn-sm shrink"><i class="fas fa-shuffle"></i> توليد</button>
-              </div>
-            </div>
-            <div class="grid two-col">
-              <div class="field-group"><label class="field-label" for="newCodeStart">بداية الحسبة</label><input id="newCodeStart" class="input" type="date"></div>
-              <div class="field-group"><label class="field-label" for="newCodeEnd">نهاية الحسبة</label><input id="newCodeEnd" class="input" type="date"></div>
-            </div>
-            <label class="toggle-row" for="oneTimeCodeToggle">
-              <input id="oneTimeCodeToggle" type="checkbox">
-              <span>كود مؤقت لمرة واحدة فقط</span>
-            </label>
-            <p class="mini-hint">إذا تفعل هذا الخيار، يتعطل الكود بعد أول استخدام ويمكن تحديد وقت انتهاء له.</p>
-            <div id="tempCodeExpiryWrap" class="field-group hidden">
-              <label class="field-label" for="tempCodeExpiry">ينتهي في</label>
-              <input id="tempCodeExpiry" class="input" type="datetime-local">
-            </div>
-            <div class="row gap-sm mobile-stack">
-              <button id="createCodeBtn" class="btn btn-primary full"><i class="fas fa-plus"></i> إضافة الكود</button>
-              <button id="deleteCodeBtn" class="btn btn-danger full"><i class="fas fa-trash"></i> حذف الكود</button>
-            </div>
-          </div>
+function genCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let c = 'MIL-';
+  for (let i = 0; i < 6; i++) c += chars[Math.floor(Math.random() * chars.length)];
+  return c;
+}
 
-          <div class="card">
-            <div class="section-title"><i class="fas fa-percent"></i> إضافة خصم</div>
-            <div class="field-group"><label class="field-label" for="discountPct">نسبة الخصم</label><input id="discountPct" class="input" type="number" min="1" max="99" placeholder="25"></div>
-            <div class="grid two-col">
-              <div class="field-group"><label class="field-label" for="discountStart">البداية</label><input id="discountStart" class="input" type="datetime-local"></div>
-              <div class="field-group"><label class="field-label" for="discountEnd">النهاية</label><input id="discountEnd" class="input" type="datetime-local"></div>
-            </div>
-            <div class="field-group"><label class="field-label" for="discountReason">السبب</label><input id="discountReason" class="input" type="text" placeholder="اختياري"></div>
-            <button id="createDiscountBtn" class="btn btn-primary full"><i class="fas fa-tags"></i> حفظ الخصم</button>
-          </div>
-        </div>
+function fmtDate(d) {
+  if (!d) return '--';
+  const dt = new Date(d);
+  if (Number.isNaN(dt.getTime())) return '--';
+  return dt.getDate() + '/' + (dt.getMonth() + 1) + '/' + dt.getFullYear();
+}
+function fmtDateTime(d) {
+  if (!d) return '--';
+  const dt = new Date(d);
+  if (Number.isNaN(dt.getTime())) return '--';
+  return fmtDate(dt) + ' - ' + dt.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'});
+}
+function calcPeriod(s, e) {
+  if (!s || !e) return '--';
+  const diff = new Date(e) - new Date(s);
+  const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+  if (Number.isNaN(days)) return '--';
+  if (days >= 30) {
+    const m = Math.floor(days / 30);
+    const rd = days % 30;
+    return m + ' شهر' + (rd > 0 ? ' و ' + rd + ' يوم' : '');
+  }
+  return days + ' يوم';
+}
 
-        <div class="grid two-col admin-grid">
-          <div class="card">
-            <div class="section-title"><i class="fas fa-note-sticky"></i> ملاحظة جديدة</div>
-            <div class="field-group"><label class="field-label" for="adminNoteText">النص</label><textarea id="adminNoteText" class="input textarea" placeholder="اكتب ملاحظة تظهر لكل المستخدمين"></textarea></div>
-            <button id="addNoteBtn" class="btn btn-primary full"><i class="fas fa-plus"></i> إضافة الملاحظة</button>
-          </div>
-          <div class="card">
-            <div class="section-title"><i class="fas fa-chart-simple"></i> ملخص</div>
-            <div id="summaryStats" class="stats-grid"></div>
-          </div>
-        </div>
+function showView(v) {
+  state.view = v;
+  document.getElementById('vLogin').classList.toggle('hidden', v !== 'login');
+  document.getElementById('vUser').classList.toggle('hidden', v !== 'user');
+  document.getElementById('vAdmin').classList.toggle('hidden', v !== 'admin');
+}
 
-        <div class="grid two-col admin-grid">
-          <div class="card">
-            <div class="section-title"><i class="fas fa-key"></i> الأكواد</div>
-            <div id="codesList" class="stack"></div>
-          </div>
-          <div class="card">
-            <div class="section-title"><i class="fas fa-tags"></i> الخصومات</div>
-            <div id="discountsList" class="stack"></div>
-          </div>
-        </div>
+function isCodeActive(code) {
+  const now = Date.now();
+  const startOk = !code.start || now >= new Date(code.start).getTime();
+  const tempOk = !code.temp || !code.tempUntil || now <= new Date(code.tempUntil).getTime();
+  return startOk && tempOk;
+}
 
-        <div class="grid two-col admin-grid">
-          <div class="card">
-            <div class="section-title"><i class="fas fa-note-sticky"></i> الملاحظات</div>
-            <div id="adminNotesList" class="stack"></div>
-          </div>
-          <div class="card">
-            <div class="section-title"><i class="fas fa-bars-progress"></i> التقدم</div>
-            <div id="progressList" class="stack"></div>
-          </div>
-        </div>
+function getActiveDiscount() {
+  const discs = getDiscs();
+  const now = Date.now();
+  let active = null;
+  for (const d of discs) {
+    const s = new Date(d.start).getTime();
+    const e = new Date(d.end).getTime();
+    if (now >= s && now <= e) {
+      if (!active || Number(d.pct) > Number(active.pct)) active = d;
+    }
+  }
+  return active;
+}
 
-        <div class="card">
-          <div class="section-title"><i class="fas fa-inbox"></i> الاستبيانات</div>
-          <div id="submissionsList" class="stack"></div>
-        </div>
-      </section>
-    </section>
-  </main>
+function getReqs() {
+  const disc = getActiveDiscount();
+  return BASE_REQS.map(r => {
+    const item = {...r};
+    if (disc && item.val > 1) {
+      item.origVal = item.val;
+      item.val = Math.ceil(item.val * (1 - Number(disc.pct) / 100));
+      item.discPct = Number(disc.pct);
+    }
+    return item;
+  });
+}
 
-  <script type="module" src="./app.js"></script>
+function loadReqsForCode(code) {
+  state.reqsDone = dbGet(reqKey(code), {});
+}
+function saveReqsForCode() {
+  if (!state.code) return;
+  dbSet(reqKey(state.code), state.reqsDone);
+}
+
+function buildUserView() {
+  const cd = state.codeData;
+  if (!cd) return;
+  document.getElementById('dStart').textContent = fmtDate(cd.start);
+  document.getElementById('dEnd').textContent = fmtDate(cd.end);
+  document.getElementById('dPeriod').textContent = calcPeriod(cd.start, cd.end);
+
+  const fDate = document.getElementById('fDate');
+  fDate.min = cd.start || '';
+  fDate.max = cd.end || '';
+
+  const disc = getActiveDiscount();
+  const banner = document.getElementById('discBanner');
+  if (disc) {
+    banner.classList.remove('hidden');
+    document.getElementById('discPct').textContent = disc.pct + '%';
+  } else {
+    banner.classList.add('hidden');
+  }
+
+  buildReqs();
+  buildOrgs();
+  buildAdminNotesUser();
+}
+
+function buildReqs() {
+  const reqs = getReqs();
+  const box = document.getElementById('reqBox');
+  box.innerHTML = '';
+  reqs.forEach(r => {
+    const done = !!state.reqsDone[r.id];
+    const el = document.createElement('div');
+    el.className = 'rq' + (done ? ' ok' : '');
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('role', 'checkbox');
+    el.setAttribute('aria-checked', done ? 'true' : 'false');
+    let valHtml = '';
+    if (r.discPct) {
+      valHtml = '<span class="dbdg">-' + r.discPct + '%</span>' + escHtml(String(r.val + ' ' + r.unit)) + '<span class="ol">' + escHtml(String(r.origVal + ' ' + r.unit)) + '</span>';
+    } else {
+      valHtml = escHtml(String(r.val + ' ' + r.unit));
+    }
+    el.innerHTML = '<div class="rc"><i class="fas ' + r.icon + '"></i></div><div class="ri"><div class="rt">' + escHtml(r.title) + '</div><div class="rd">' + escHtml(r.desc) + '</div></div><div class="rv">' + valHtml + '</div>';
+    el.addEventListener('click', () => toggleReq(r.id));
+    el.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        toggleReq(r.id);
+      }
+    });
+    box.appendChild(el);
+  });
+  updateProgress();
+}
+
+function toggleReq(id) {
+  state.reqsDone[id] = !state.reqsDone[id];
+  saveReqsForCode();
+  buildReqs();
+}
+
+function updateProgress() {
+  const reqs = getReqs();
+  const total = reqs.length;
+  const done = reqs.filter(r => state.reqsDone[r.id]).length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('prgPct').textContent = pct + '%';
+  document.getElementById('prgFl').style.width = pct + '%';
+}
+
+function buildOrgs() {
+  const box = document.getElementById('orgBox');
+  box.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:7px;margin-bottom:7px';
+    row.innerHTML = '<input type="text" class="fi org-n" placeholder="اسم المنظم ' + (i + 1) + '" style="flex:1"><input type="text" class="fi org-r" placeholder="الرتبة" style="width:110px">';
+    box.appendChild(row);
+  }
+}
+
+function buildAdminNotesUser() {
+  const notes = getNotes();
+  const wrap = document.getElementById('adminNotes');
+  const list = document.getElementById('adminNotesList');
+  if (!notes.length) {
+    wrap.classList.add('hidden');
+    list.innerHTML = '';
+    return;
+  }
+  wrap.classList.remove('hidden');
+  list.innerHTML = '';
+  notes.forEach((n, i) => {
+    const el = document.createElement('div');
+    el.className = 'nr';
+    el.innerHTML = '<div class="nn">' + (i + 1) + '</div><div class="nt">' + escHtml(n.text) + '</div>';
+    list.appendChild(el);
+  });
+}
+
+function loginUser() {
+  const input = document.getElementById('inCode');
+  const codeText = input.value.trim().toUpperCase();
+  if (!codeText) {
+    toast('يرجى إدخال الرمز', 'e');
+    return;
+  }
+  const codes = getCodes();
+  const found = codes.find(c => String(c.code).toUpperCase() === codeText);
+  if (!found) {
+    toast('الكود غير موجود', 'e');
+    return;
+  }
+  if (found.temp) {
+    if (found.used) {
+      toast('هذا الكود المؤقت تم استخدامه من قبل', 'e');
+      return;
+    }
+    if (found.tempUntil && Date.now() > new Date(found.tempUntil).getTime()) {
+      toast('انتهت صلاحية الكود المؤقت', 'e');
+      return;
+    }
+  }
+  state.code = found.code;
+  state.codeData = found;
+  loadReqsForCode(found.code);
+  if (found.temp) {
+    const updatedCodes = codes.map(c => c.code === found.code ? {...c, used: true, usedAt: new Date().toISOString()} : c);
+    saveCodes(updatedCodes);
+    state.codeData = updatedCodes.find(c => c.code === found.code);
+  }
+  buildUserView();
+  showView('user');
+  input.value = '';
+}
+
+function loginAdmin() {
+  const pwd = window.prompt('أدخل كلمة مرور الإدارة');
+  if (pwd === null) return;
+  if (pwd !== ADMIN_PWD) {
+    toast('كلمة المرور غير صحيحة', 'e');
+    return;
+  }
+  state.adminAuth = true;
+  buildAdminView();
+  showView('admin');
+}
+
+function logoutAdmin() {
+  state.adminAuth = false;
+  showView('login');
+}
+
+function buildAdminView() {
+  buildCodesList();
+  buildDiscountList();
+  buildNotesList();
+  buildSubsList();
+  activateAdminTab(state.adminTab || 'codes');
+}
+
+function activateAdminTab(tabName) {
+  state.adminTab = tabName;
+  document.querySelectorAll('#adminTabs .tab').forEach(tab => tab.classList.toggle('on', tab.dataset.t === tabName));
+  document.querySelectorAll('.atab').forEach(panel => panel.classList.add('hidden'));
+  const map = {codes:'pCodes', disc:'pDisc', notes:'pNotes', subs:'pSubs'};
+  document.getElementById(map[tabName]).classList.remove('hidden');
+}
+
+function buildCodesList() {
+  const list = document.getElementById('codesList');
+  const codes = [...getCodes()].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+  if (!codes.length) {
+    list.innerHTML = '<div class="empty-st"><i class="fas fa-key"></i>لا توجد أكواد بعد</div>';
+    return;
+  }
+  list.innerHTML = '';
+  codes.forEach(code => {
+    const activeTag = isCodeActive(code) ? 'act' : 'inact';
+    const activeText = isCodeActive(code) ? 'نشط' : 'غير نشط';
+    const tags = ['<span class="tg ' + activeTag + '">' + activeText + '</span>'];
+    if (code.temp) tags.push('<span class="tg temp">مؤقت</span>');
+    if (code.used) tags.push('<span class="tg used">مستخدم</span>');
+    const el = document.createElement('div');
+    el.className = 'ckc';
+    el.innerHTML = '<div class="tp"><div><div class="ct">' + escHtml(code.code) + '</div><div class="cds">الحسبة: ' + escHtml(fmtDate(code.start)) + ' - ' + escHtml(fmtDate(code.end)) + '</div>' + (code.temp ? '<div class="cds">ينتهي المؤقت: ' + escHtml(fmtDateTime(code.tempUntil)) + '</div>' : '') + '</div></div><div class="mts">' + tags.join('') + '</div>';
+    list.appendChild(el);
+  });
+}
+
+function deleteCode(codeText) {
+  if (!window.confirm('تأكيد حذف الكود: ' + codeText + ' ؟')) return;
+  const filtered = getCodes().filter(c => c.code !== codeText);
+  saveCodes(filtered);
+  localStorage.removeItem(DB_PREFIX + reqKey(codeText));
+  buildCodesList();
+  toast('تم حذف الكود', 's');
+}
+
+function buildDiscountList() {
+  const list = document.getElementById('discList');
+  const discs = [...getDiscs()].sort((a, b) => new Date(b.start) - new Date(a.start));
+  if (!discs.length) {
+    list.innerHTML = '<div class="empty-st"><i class="fas fa-tags"></i>لا توجد خصومات</div>';
+    return;
+  }
+  list.innerHTML = '';
+  discs.forEach(disc => {
+    const active = Date.now() >= new Date(disc.start).getTime() && Date.now() <= new Date(disc.end).getTime();
+    const el = document.createElement('div');
+    el.className = 'ckc';
+    el.innerHTML = '<div class="tp"><div><div class="ct">' + escHtml(String(disc.pct)) + '%</div><div class="cds">' + escHtml(fmtDateTime(disc.start)) + ' → ' + escHtml(fmtDateTime(disc.end)) + '</div><div class="cds">' + escHtml(disc.reason || 'بدون سبب') + '</div></div><div class="actions"><button class="bt btr bts btn-del-disc" data-id="' + escHtml(disc.id) + '"><i class="fas fa-trash"></i> حذف</button></div></div><div class="mts"><span class="tg ' + (active ? 'act' : 'inact') + '">' + (active ? 'فعال الآن' : 'منتهي أو غير فعال') + '</span></div>';
+    list.appendChild(el);
+  });
+  list.querySelectorAll('.btn-del-disc').forEach(btn => btn.addEventListener('click', () => deleteDiscount(btn.dataset.id)));
+}
+
+function deleteDiscount(id) {
+  const discs = getDiscs().filter(d => d.id !== id);
+  saveDiscs(discs);
+  buildDiscountList();
+  toast('تم حذف الخصم', 's');
+}
+
+function buildNotesList() {
+  const list = document.getElementById('notesList');
+  const notes = [...getNotes()].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+  if (!notes.length) {
+    list.innerHTML = '<div class="empty-st"><i class="fas fa-note-sticky"></i>لا توجد ملاحظات</div>';
+    return;
+  }
+  list.innerHTML = '';
+  notes.forEach(note => {
+    const el = document.createElement('div');
+    el.className = 'ckc';
+    el.innerHTML = '<div class="tp"><div class="cds">' + escHtml(fmtDateTime(note.createdAt)) + '</div><div class="actions"><button class="bt btr bts btn-del-note" data-id="' + escHtml(note.id) + '"><i class="fas fa-trash"></i> إزالة الملاحظة</button></div></div><div class="nt">' + escHtml(note.text) + '</div>';
+    list.appendChild(el);
+  });
+  list.querySelectorAll('.btn-del-note').forEach(btn => btn.addEventListener('click', () => deleteNote(btn.dataset.id)));
+}
+
+function deleteNote(id) {
+  const notes = getNotes().filter(n => n.id !== id);
+  saveNotes(notes);
+  buildNotesList();
+  buildAdminNotesUser();
+  toast('تمت إزالة الملاحظة', 's');
+}
+
+function buildSubsList() {
+  const list = document.getElementById('subsList');
+  const subs = [...getSubs()].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  if (!subs.length) {
+    list.innerHTML = '<div class="empty-st"><i class="fas fa-inbox"></i>لم يتم تسليم أي استبيان بعد</div>';
+    return;
+  }
+  list.innerHTML = '';
+  subs.forEach(sub => {
+    const orgsHtml = sub.orgs.map(o => '<div>• ' + escHtml(o.name) + (o.rank ? ' — ' + escHtml(o.rank) : '') + '</div>').join('');
+    const el = document.createElement('div');
+    el.className = 'sbc';
+    el.innerHTML = '<div class="sh"><div class="sc">' + escHtml(sub.courseName) + '</div><div class="stm">' + escHtml(fmtDateTime(sub.createdAt)) + '</div></div><div class="sd"><b>الكود:</b> ' + escHtml(sub.code) + '<br><b>تاريخ الدورة:</b> ' + escHtml(fmtDate(sub.date)) + ' - ' + escHtml(sub.time) + '<br><b>عن الدورة:</b> ' + escHtml(sub.about) + '<br><b>التفاصيل:</b> ' + escHtml(sub.detail) + '</div><div class="orgs"><div class="sd"><b>المنظمين:</b><br>' + orgsHtml + '</div></div>';
+    list.appendChild(el);
+  });
+}
+
+function submitSurvey() {
+  if (!state.codeData) return;
+  const fDate = document.getElementById('fDate').value;
+  const fTime = document.getElementById('fTime').value;
+  const fName = document.getElementById('fName').value.trim();
+  const fAbout = document.getElementById('fAbout').value.trim();
+  const fDetail = document.getElementById('fDetail').value.trim();
+
+  const orgNs = document.querySelectorAll('.org-n');
+  const orgRs = document.querySelectorAll('.org-r');
+  const orgs = [];
+  for (let i = 0; i < 4; i++) {
+    const n = (orgNs[i].value || '').trim();
+    const r = (orgRs[i].value || '').trim();
+    if (n) orgs.push({name:n, rank:r});
+  }
+
+  if (!fDate) return toast('يرجى تحديد يوم الدورة', 'e');
+  if (!fTime) return toast('يرجى تحديد الساعة', 'e');
+  if (orgs.length < 2) return toast('يرجى تعبئة منظمين على الأقل (2)', 'e');
+  if (!fName) return toast('يرجى كتابة اسم الدورة', 'e');
+  if (!fAbout) return toast('يرجى وصف محتوى الدورة', 'e');
+  if (!fDetail) return toast('يرجى كتابة الشرح التفصيلي', 'e');
+
+  const selected = new Date(fDate + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const daysDiff = Math.floor((selected - today) / (1000 * 60 * 60 * 24));
+  if (daysDiff < 3) return toast('يجب تسليم الاستبيان قبل الدورة بـ 3 أيام على الأقل', 'e');
+  if (state.codeData.start && selected < new Date(state.codeData.start + 'T00:00:00')) return toast('تاريخ الدورة قبل بداية الحسبة', 'e');
+  if (state.codeData.end && selected > new Date(state.codeData.end + 'T00:00:00')) return toast('تاريخ الدورة بعد نهاية الحسبة', 'e');
+
+  const subs = getSubs();
+  subs.push({
+    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+    code: state.code,
+    date: fDate,
+    time: fTime,
+    courseName: fName,
+    about: fAbout,
+    detail: fDetail,
+    orgs,
+    createdAt: new Date().toISOString()
+  });
+  saveSubs(subs);
+  state.reqsDone.course = true;
+  saveReqsForCode();
+  buildReqs();
+  buildSubsList();
+  document.getElementById('fDate').value = '';
+  document.getElementById('fTime').value = '';
+  document.getElementById('fName').value = '';
+  document.getElementById('fAbout').value = '';
+  document.getElementById('fDetail').value = '';
+  document.querySelectorAll('.org-n,.org-r').forEach(inp => { inp.value = ''; });
+  toast('تم تسليم استبيان الدورة بنجاح', 's');
+}
+
+function addCode() {
+  const code = document.getElementById('ncCode').value.trim().toUpperCase();
+  const start = document.getElementById('ncStart').value;
+  const end = document.getElementById('ncEnd').value;
+  const temp = document.getElementById('ncTemp').checked;
+  const tempUntil = document.getElementById('ncTempUntil').value;
+  if (!code) return toast('يرجى كتابة الرمز', 'e');
+  if (!start || !end) return toast('يرجى تحديد فترة الحسبة', 'e');
+  if (new Date(end) < new Date(start)) return toast('نهاية الحسبة يجب أن تكون بعد البداية', 'e');
+  if (temp && !tempUntil) return toast('حدد وقت انتهاء الكود المؤقت', 'e');
+  if (temp && new Date(tempUntil).getTime() <= Date.now()) return toast('وقت انتهاء الكود المؤقت لازم يكون بالمستقبل', 'e');
+  const codes = getCodes();
+  if (codes.some(c => c.code.toUpperCase() === code)) return toast('هذا الكود موجود مسبقًا', 'e');
+  codes.push({
+    code,
+    start,
+    end,
+    temp,
+    tempUntil: temp ? tempUntil : null,
+    used: false,
+    createdAt: new Date().toISOString()
+  });
+  saveCodes(codes);
+  document.getElementById('ncCode').value = '';
+  document.getElementById('ncStart').value = '';
+  document.getElementById('ncEnd').value = '';
+  document.getElementById('ncTemp').checked = false;
+  document.getElementById('ncTempUntil').value = '';
+  document.getElementById('tempWrap').classList.add('hidden');
+  buildCodesList();
+  toast('تمت إضافة الكود', 's');
+}
+
+function deleteCodeFromInput() {
+  const code = document.getElementById('ncCode').value.trim().toUpperCase();
+  if (!code) return toast('اكتب الكود اللي تبي تحذفه', 'e');
+  const codes = getCodes();
+  if (!codes.some(c => c.code.toUpperCase() === code)) return toast('الكود غير موجود', 'e');
+  deleteCode(code);
+  document.getElementById('ncCode').value = '';
+}
+
+function addDiscount() {
+  const pct = Number(document.getElementById('ndPct').value);
+  const start = document.getElementById('ndStart').value;
+  const end = document.getElementById('ndEnd').value;
+  const reason = document.getElementById('ndReason').value.trim();
+  if (!pct || pct < 1 || pct > 99) return toast('نسبة الخصم غير صحيحة', 'e');
+  if (!start || !end) return toast('حدد وقت بداية ونهاية الخصم', 'e');
+  if (new Date(end) <= new Date(start)) return toast('نهاية الخصم يجب أن تكون بعد البداية', 'e');
+  const discs = getDiscs();
+  discs.push({id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), pct, start, end, reason, createdAt: new Date().toISOString()});
+  saveDiscs(discs);
+  document.getElementById('ndPct').value = '';
+  document.getElementById('ndStart').value = '';
+  document.getElementById('ndEnd').value = '';
+  document.getElementById('ndReason').value = '';
+  buildDiscountList();
+  toast('تمت إضافة الخصم', 's');
+}
+
+function addNote() {
+  const text = document.getElementById('nnText').value.trim();
+  if (!text) return toast('اكتب الملاحظة أولًا', 'e');
+  const notes = getNotes();
+  notes.push({id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), text, createdAt: new Date().toISOString()});
+  saveNotes(notes);
+  document.getElementById('nnText').value = '';
+  buildNotesList();
+  buildAdminNotesUser();
+  toast('تمت إضافة الملاحظة', 's');
+}
+
+function seedDemoData() {
+  if (!getCodes().length) {
+    saveCodes([{code:'MIL-DEMO1', start:'2026-04-01', end:'2026-06-30', temp:false, tempUntil:null, used:false, createdAt:new Date().toISOString()}]);
+  }
+}
+
+function bindEvents() {
+  document.getElementById('btnGo').addEventListener('click', loginUser);
+  document.getElementById('inCode').addEventListener('keydown', e => { if (e.key === 'Enter') loginUser(); });
+  document.getElementById('btnAdmin').addEventListener('click', loginAdmin);
+  document.getElementById('btnLogout').addEventListener('click', logoutAdmin);
+  document.getElementById('btnSubmit').addEventListener('click', submitSurvey);
+  document.getElementById('btnGen').addEventListener('click', () => { document.getElementById('ncCode').value = genCode(); });
+  document.getElementById('btnAddCode').addEventListener('click', addCode);
+  document.getElementById('btnDeleteCodeByInput').addEventListener('click', deleteCodeFromInput);
+  document.getElementById('btnAddDisc').addEventListener('click', addDiscount);
+  document.getElementById('btnAddNote').addEventListener('click', addNote);
+  document.getElementById('ncTemp').addEventListener('change', e => {
+    document.getElementById('tempWrap').classList.toggle('hidden', !e.target.checked);
+  });
+  document.querySelectorAll('#adminTabs .tab').forEach(tab => {
+    tab.addEventListener('click', () => activateAdminTab(tab.dataset.t));
+  });
+}
+
+seedDemoData();
+bindEvents();
+showView('login');
+</script>
 </body>
 </html>
